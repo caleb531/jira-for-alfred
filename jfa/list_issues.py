@@ -5,6 +5,24 @@ import sys
 
 import jfa.core as core
 
+issue_types = [
+    "10303",  # Bug
+    "10316",  # Subtask
+    "10318",  # Task
+    "10320",  # Scenario
+    "10624",  # Test
+    "epic",  # Epic
+    "story",  # Story
+]
+
+
+# Retrieve the local file path corresponding to the type of the current issue
+def get_issue_icon_path(issue):
+    for issue_type in issue_types:
+        if issue_type in issue["img"]:
+            return f"jfa/icons/{issue_type}.png"
+    return "icon.png"
+
 
 # Convert the given dictionary representation of a Jira issue to a Alfred
 # feedback result dictionary
@@ -13,6 +31,7 @@ def get_result_from_issue(issue):
         "title": issue["summaryText"],
         "subtitle": f"{issue['key']} (view in Jira)",
         "arg": issue["id"],
+        "icon": {"path": get_issue_icon_path(issue)},
         "variables": {
             "issue_id": issue["id"],
             "issue_key": issue["key"],

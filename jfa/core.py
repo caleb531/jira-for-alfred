@@ -37,8 +37,6 @@ def get_result_list_feedback_item(result):
     item["mods"] = result.get("mods", {}).copy()
     item["mods"]["ctrl"] = item["mods"].get("ctrl", {"arg": result["title"]})
 
-    # Icon shown next to result text
-    item["icon"] = {"path": "icon.png"}
     return item
 
 
