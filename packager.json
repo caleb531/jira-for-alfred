@@ -1,0 +1,10 @@
+{
+  "export_files": [
+    "Jira for Alfred (Alfred 5).alfredworkflow"
+  ],
+  "bundle_id": "com.calebevans.jiraforalfred",
+  "resources": [
+    "icon.png",
+    "jfa/*"
+  ]
+}
