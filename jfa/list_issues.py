@@ -11,7 +11,7 @@ import jfa.core as core
 def get_result_from_issue(issue):
     return {
         "title": issue["summaryText"],
-        "subtitle": "View in Jira",
+        "subtitle": f"{issue['key']} (view in Jira)",
         "arg": issue["id"],
         "variables": {
             "issue_id": issue["id"],
