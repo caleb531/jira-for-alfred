@@ -17,7 +17,7 @@ def get_result_from_issue(issue):
             "issue_id": issue["id"],
             "issue_key": issue["key"],
             "issue_summary": issue["summaryText"],
-            "issue_url": "{base_url}/AC{issue_id}".format(
+            "issue_url": "{base_url}/browse/{issue_id}".format(
                 base_url=core.ACCOUNT_BASE_URL, issue_id=issue["key"]
             ),
         },
