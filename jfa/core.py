@@ -4,6 +4,7 @@
 import base64
 import json
 import os
+import re
 import urllib.request as urlrequest
 import urllib.parse as urlparse
 from gzip import GzipFile
@@ -12,11 +13,10 @@ from io import BytesIO
 # Unique identifier for the workflow
 WORKFLOW_UID = 'com.calebevans.jiraforalfred'
 
-
+# The base URL for the Jira account
+ACCOUNT_BASE_URL = re.sub('r/$', '', os.environ.get('jira_base_url', ''))
 # The base URL for the Jira Cloud Platform API
-API_BASE_URL = os.environ.get('base_url') + \
-    os.environ.get('base_path', '') + \
-    'rest/api/3'
+API_BASE_URL = ACCOUNT_BASE_URL + '/rest/api/3'
 # The User Agent used for all HTTP requests to the Jira Cloud Platform API
 REQUEST_USER_AGENT = 'Jira for Alfred (Mozilla/5.0)'
 # The number of seconds to wait before timing out an HTTP request to the API
@@ -59,8 +59,8 @@ def get_authorization_header():
     return '{auth_type} {auth_credentials}'.format(
         auth_type='Basic',
         auth_credentials=base64.standard_b64encode('{id}:{secret}'.format(
-            id=os.environ.get('username').strip(),
-            secret=os.environ.get('app_token').strip())
+            id=os.environ.get('jira_username').strip(),
+            secret=os.environ.get('jira_api_token').strip())
                     .encode('utf-8')).decode('utf-8'))
 
 
@@ -86,4 +86,4 @@ def fetch_data(endpoint_path, params=None):
         with GzipFile(fileobj=str_buf, mode='rb') as gzip_file:
             url_content = gzip_file.read()
 
-    return json.loads(url_content.decode('utf-8'))['data']
+    return json.loads(url_content.decode('utf-8'))['sections'][0]['issues']
