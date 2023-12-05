@@ -49,7 +49,9 @@ def get_result_from_issue(issue):
 def get_result_list(query_str):
     query_str = query_str.lower()
 
-    issues = core.fetch_data("/issue/picker", params={"query": query_str})
+    issues = core.fetch_data(
+        "/issue/picker", params={"query": query_str, "showSubTasks": "true"}
+    )
     results = [get_result_from_issue(issue) for issue in issues]
 
     return results
