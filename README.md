@@ -49,7 +49,7 @@ The main usage of the workflow is through the `jira` keyword. With it, you can s
 1. By default, open the issue page in your browser
 2. Hold down the *Command* key to copy the key/ID of the issue (*e.g.*
    "ABC-123")
-3. Hold down the *Option* key to copy the issue summary (*e.g.* "Fix the thing")
+3. Hold down the *Shift* key to copy the issue summary (*e.g.* "Fix the thing")
 
 ## Disclaimer
 
