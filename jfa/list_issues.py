@@ -6,21 +6,21 @@ import sys
 import jfa.core as core
 
 issue_types = [
-    "10303",  # Bug
-    "10316",  # Subtask
-    "10318",  # Task
-    "10320",  # Scenario
-    "10624",  # Test
-    "epic",  # Epic
-    "story",  # Story
+    {"slug": "bug", "keyword": "10303", "icon": "bug.svg"},
+    {"slug": "subtask", "keyword": "10316", "icon": "subtask.svg"},
+    {"slug": "task", "keyword": "10318", "icon": "task.svg"},
+    {"slug": "scenario", "keyword": "10320", "icon": "scenario.svg"},
+    {"slug": "test", "keyword": "10624", "icon": "test.png"},
+    {"slug": "epic", "keyword": "epic", "icon": "epic.svg"},
+    {"slug": "story", "keyword": "story", "icon": "story.svg"},
 ]
 
 
 # Retrieve the local file path corresponding to the type of the current issue
 def get_issue_icon_path(issue):
     for issue_type in issue_types:
-        if issue_type in issue["img"]:
-            return f"jfa/icons/{issue_type}.png"
+        if issue_type["keyword"] in issue["img"]:
+            return f"jfa/icons/{issue_type['icon']}"
     return "icon.png"
 
 
