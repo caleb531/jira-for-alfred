@@ -9,7 +9,7 @@ import urllib.parse as urlparse
 import urllib.request as urlrequest
 from gzip import GzipFile
 from io import BytesIO
-from typing import Optional
+from typing import Optional, Sequence
 
 from jfa.types import Result
 
@@ -44,7 +44,7 @@ def get_result_list_feedback_item(result: Result) -> Result:
 
 
 # Constructs an Alfred JSON string from the given result list
-def get_result_list_feedback_str(results: list[Result]) -> str:
+def get_result_list_feedback_str(results: Sequence[Result]) -> str:
     return json.dumps(
         {"items": [get_result_list_feedback_item(result) for result in results]}
     )
