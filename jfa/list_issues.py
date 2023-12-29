@@ -6,38 +6,40 @@ import sys
 
 import jfa.core as core
 
-issue_type_def_map = {
-    "bug": {"type": "bug", "icon_path": "jfa/icons/bug.svg"},
-    "sub-task": {"type": "sub-task", "icon_path": "jfa/icons/subtask.svg"},
-    "task": {"type": "task", "icon_path": "jfa/icons/task.svg"},
-    "scenario": {"type": "scenario", "icon_path": "jfa/icons/scenario.svg"},
-    "test": {"type": "test", "icon_path": "jfa/icons/test.png"},
-    "epic": {"type": "epic", "icon_path": "jfa/icons/epic.svg"},
-    "story": {"type": "story", "icon_path": "jfa/icons/story.svg"},
+# The issue types supported by this workflow
+SUPPORTED_ISSUE_TYPES = {
+    "bug",
+    "sub-task",
+    "task",
+    "scenario",
+    "test",
+    "epic",
+    "story",
 }
 
 
-# Retrieve an object representing the type of this particular issue
-def get_issue_type_def(issue):
-    return issue_type_def_map.get(
-        issue["fields"]["issuetype"]["name"].lower(),
-        {"type": "unknown", "icon_path": "icon.png"},
-    )
+# Retrieve the path to the icon for the given issue type; if an issue type is
+# unsupported by this workflow, then the default workflow icon will be used
+def get_issue_type_icon(issue_type):
+    if issue_type in SUPPORTED_ISSUE_TYPES:
+        return f"jfa/icons/{issue_type}.svg"
+    else:
+        return "icon.png"
 
 
 # Convert the given dictionary representation of a Jira issue to a Alfred
 # feedback result dictionary
 def get_result_from_issue(issue):
-    issue_type_def = get_issue_type_def(issue)
+    issue_type = issue["fields"]["issuetype"]["name"].lower()
     return {
         "title": issue["fields"]["summary"],
         "subtitle": f"{issue['key']} (view in Jira)",
         "arg": issue["id"],
-        "icon": {"path": issue_type_def["icon_path"]},
+        "icon": {"path": get_issue_type_icon(issue_type)},
         "variables": {
             "issue_id": issue["id"],
             "issue_key": issue["key"],
-            "issue_type": issue_type_def["type"],
+            "issue_type": issue_type,
             "issue_summary": issue["fields"]["summary"],
             "issue_url": "{base_url}/browse/{issue_id}".format(
                 base_url=core.ACCOUNT_BASE_URL, issue_id=issue["key"]
