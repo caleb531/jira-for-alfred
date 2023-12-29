@@ -60,7 +60,7 @@ def is_issue_key(query_str: str) -> bool:
 
 # Sanitize query string by removing quotes
 def sanitize_query_str(query_str: str) -> str:
-    return re.sub(r'["\']', "", query_str).strip()
+    return re.sub(r'["]', "", query_str).strip()
 
 
 # Construct the JQL expression used to search for issues matching the given
