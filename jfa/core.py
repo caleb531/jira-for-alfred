@@ -9,6 +9,9 @@ import urllib.parse as urlparse
 import urllib.request as urlrequest
 from gzip import GzipFile
 from io import BytesIO
+from typing import Optional
+
+from jfa.types import Result
 
 # Unique identifier for the workflow
 WORKFLOW_UID = "com.calebevans.jiraforalfred"
@@ -24,7 +27,7 @@ REQUEST_CONNECTION_TIMEOUT = 5
 
 
 # Build the object for a single result list feedback item
-def get_result_list_feedback_item(result):
+def get_result_list_feedback_item(result: Result) -> Result:
     item = result.copy()
 
     item["text"] = result.get("text", {}).copy()
@@ -41,20 +44,20 @@ def get_result_list_feedback_item(result):
 
 
 # Constructs an Alfred JSON string from the given result list
-def get_result_list_feedback_str(results):
+def get_result_list_feedback_str(results: list[Result]) -> str:
     return json.dumps(
         {"items": [get_result_list_feedback_item(result) for result in results]}
     )
 
 
 # Return the value used for the Authorization header on every API request
-def get_authorization_header():
+def get_authorization_header() -> str:
     return "{auth_type} {auth_credentials}".format(
         auth_type="Basic",
         auth_credentials=base64.standard_b64encode(
             "{id}:{secret}".format(
-                id=os.environ.get("jira_username").strip(),
-                secret=os.environ.get("jira_api_token").strip(),
+                id=str(os.environ.get("jira_username")).strip(),
+                secret=str(os.environ.get("jira_api_token")).strip(),
             ).encode("utf-8")
         ).decode("utf-8"),
     )
@@ -62,7 +65,7 @@ def get_authorization_header():
 
 # Fetch data from the Jira Cloud Platform API, optionally along with the dict of
 # GET parameters
-def fetch_data(endpoint_path, params=None):
+def fetch_data(endpoint_path: str, params: Optional[dict] = None) -> list:
     request_url = API_BASE_URL + endpoint_path
     if params:
         request_url += "?" + urlparse.urlencode(params)

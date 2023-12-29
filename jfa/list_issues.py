@@ -5,6 +5,7 @@ import re
 import sys
 
 import jfa.core as core
+from jfa.types import Issue, Result
 
 # The maximum number of results to list
 MAX_RESULT_COUNT = 9
@@ -23,7 +24,7 @@ SUPPORTED_ISSUE_TYPES = {
 
 # Retrieve the path to the icon for the given issue type; if an issue type is
 # unsupported by this workflow, then the default workflow icon will be used
-def get_issue_type_icon(issue_type):
+def get_issue_type_icon(issue_type: str) -> str:
     if issue_type in SUPPORTED_ISSUE_TYPES:
         return f"jfa/icons/{issue_type}.svg"
     else:
@@ -32,7 +33,7 @@ def get_issue_type_icon(issue_type):
 
 # Convert the given dictionary representation of a Jira issue to a Alfred
 # feedback result dictionary
-def get_result_from_issue(issue):
+def get_result_from_issue(issue: Issue) -> Result:
     issue_type = issue["fields"]["issuetype"]["name"].lower()
     return {
         "title": issue["fields"]["summary"],
@@ -53,18 +54,18 @@ def get_result_from_issue(issue):
 
 # Return a boolean indicating whether or not the given query string is formatted
 # like an issue key
-def is_issue_key(query_str):
-    return re.search(r"^[A-Z]+-[0-9]+$", query_str.upper().strip())
+def is_issue_key(query_str: str) -> bool:
+    return bool(re.search(r"^[A-Z]+-[0-9]+$", query_str.upper().strip()))
 
 
 # Sanitize query string by removing quotes
-def sanitize_query_str(query_str):
+def sanitize_query_str(query_str: str) -> str:
     return re.sub(r'["\']', "", query_str).strip()
 
 
 # Construct the JQL expression used to search for issues matching the given
 # query string
-def get_search_jql(query_str):
+def get_search_jql(query_str: str) -> str:
     if is_issue_key(query_str):
         return f'issuekey = "{sanitize_query_str(query_str)}"'
     else:
@@ -72,7 +73,7 @@ def get_search_jql(query_str):
 
 
 # Retrieves search resylts matching the given query
-def get_result_list(query_str):
+def get_result_list(query_str: str) -> list[Result]:
     query_str = query_str.lower()
 
     issues = core.fetch_data(
@@ -88,7 +89,7 @@ def get_result_list(query_str):
     return results
 
 
-def main(query_str):
+def main(query_str: str) -> None:
     results = get_result_list(query_str)
 
     if not results:
