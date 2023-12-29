@@ -13,8 +13,8 @@ from typing import Optional
 
 from jfa.types import Result
 
-# Unique identifier for the workflow
-WORKFLOW_UID = "com.calebevans.jiraforalfred"
+# Unique identifier for the workflow bundle
+WORKFLOW_BUNDLE_ID = "com.calebevans.jiraforalfred"
 
 # The base URL for the Jira account
 ACCOUNT_BASE_URL = re.sub("r/$", "", os.environ.get("jira_base_url", ""))
