@@ -21,7 +21,7 @@ def get_issue_type_def(issue):
     for issue_type_def in issue_type_defs:
         if issue_type_def["keyword"] in issue["img"]:
             return issue_type_def
-    return {"type": "unknown", "keyword": None, "icon": "icon.png"}
+    return {"type": "unknown", "keyword": None, "icon_path": "icon.png"}
 
 
 # Convert the given dictionary representation of a Jira issue to a Alfred
