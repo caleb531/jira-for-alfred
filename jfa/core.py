@@ -84,4 +84,4 @@ def fetch_data(endpoint_path, params=None):
         with GzipFile(fileobj=str_buf, mode="rb") as gzip_file:
             url_content = gzip_file.read()
 
-    return json.loads(url_content.decode("utf-8"))["sections"][0]["issues"]
+    return json.loads(url_content.decode("utf-8"))["issues"]
