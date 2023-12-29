@@ -6,6 +6,9 @@ import sys
 
 import jfa.core as core
 
+# The maximum number of results to list
+MAX_RESULT_COUNT = 9
+
 # The issue types supported by this workflow
 SUPPORTED_ISSUE_TYPES = {
     "bug",
@@ -77,7 +80,7 @@ def get_result_list(query_str):
         params={
             "fields": "summary,issuetype",
             "jql": get_search_jql(query_str),
-            "maxResults": 9,
+            "maxResults": MAX_RESULT_COUNT,
         },
     )
     results = [get_result_from_issue(issue) for issue in issues]
