@@ -65,7 +65,7 @@ def get_search_jql(query_str):
     if is_issue_key(query_str):
         return f'issuekey = "{sanitize_query_str(query_str)}"'
     else:
-        return f'summary ~ "{sanitize_query_str(query_str)}" ORDER BY lastViewed DESC, updated DESC'  # noqa: E501
+        return f'summary ~ "{sanitize_query_str(query_str)}" AND lastViewed IS NOT NULL ORDER BY lastViewed DESC'  # noqa: E501
 
 
 # Retrieves search resylts matching the given query
