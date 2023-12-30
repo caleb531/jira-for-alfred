@@ -18,6 +18,8 @@ WORKFLOW_BUNDLE_ID = "com.calebevans.jiraforalfred"
 
 # The base URL for the Jira account
 ACCOUNT_BASE_URL = re.sub("r/$", "", os.environ.get("jira_base_url", ""))
+# The base URL for a Jira issue
+ISSUE_BASE_URL = f"{ACCOUNT_BASE_URL}/browse"
 # The base URL for the Jira Cloud Platform API
 API_BASE_URL = ACCOUNT_BASE_URL + "/rest/api/3"
 # The User Agent used for all HTTP requests to the Jira Cloud Platform API

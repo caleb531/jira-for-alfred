@@ -31,6 +31,11 @@ def get_issue_type_icon(issue_type: str) -> str:
         return "icon.png"
 
 
+# Construct the URL for the issue with the given key
+def get_issue_url(issue_key: str) -> str:
+    return f"{core.ISSUE_BASE_URL}/{issue_key}"
+
+
 # Convert the given dictionary representation of a Jira issue to a Alfred
 # feedback result dictionary
 def get_result_from_issue(issue: Issue) -> Result:
@@ -45,11 +50,15 @@ def get_result_from_issue(issue: Issue) -> Result:
             "issue_key": issue["key"],
             "issue_type": issue_type,
             "issue_summary": issue["fields"]["summary"],
-            "issue_url": "{base_url}/browse/{issue_id}".format(
-                base_url=core.ACCOUNT_BASE_URL, issue_id=issue["key"]
-            ),
+            "issue_url": get_issue_url(issue["key"]),
         },
     }
+
+
+# Return a boolean indicating whether or not the given query string is a Jira
+# issue URL
+def is_issue_url(query_str: str) -> bool:
+    return query_str.startswith(core.ISSUE_BASE_URL)
 
 
 # Return a boolean indicating whether or not the given query string is formatted
@@ -103,6 +112,11 @@ def get_result_list(query_str: str) -> list[Result]:
 
 
 def main(query_str: str) -> None:
+    # If query string appears to be a URL to a Jira issue, convert it to an
+    # issue key, then search using that issue key
+    if is_issue_url(query_str):
+        query_str = query_str.replace(f"{core.ISSUE_BASE_URL}/", "")
+
     results = get_result_list(query_str)
 
     if not results:
