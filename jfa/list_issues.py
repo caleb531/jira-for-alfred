@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding=utf-8
 
+import os
 import re
 import sys
 
@@ -80,15 +81,29 @@ def interpolate_variables_into_jql(jql_str: str, **variables: str) -> str:
     )
 
 
+# Construct an additional filter (to tack onto the start of every JQL query)
+# which restricts the result set to the user-specified projects
+def get_project_filter() -> str:
+    project_list_str = os.environ.get("jira_restrict_to_projects", "")
+    if project_list_str:
+        project_keys = re.split(r",\s*", project_list_str)
+        project_key_str = ", ".join(
+            f"{sanitize_jql_value(key)}" for key in project_keys
+        )
+        return f"project IN ({project_key_str}) AND "
+    else:
+        return ""
+
+
 # Construct the JQL expression used to search for issues matching the given
 # query string
 def get_search_jql(query_str: str) -> str:
     if is_issue_key(query_str):
-        return interpolate_variables_into_jql(
+        return get_project_filter() + interpolate_variables_into_jql(
             'issuekey = "{query_str}"', query_str=query_str
         )
     else:
-        return interpolate_variables_into_jql(
+        return get_project_filter() + interpolate_variables_into_jql(
             'summary ~ "{query_str}*" ORDER BY lastViewed DESC',
             query_str=query_str,
         )
