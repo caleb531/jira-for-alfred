@@ -58,18 +58,31 @@ def is_issue_key(query_str: str) -> bool:
     return bool(re.search(r"^[A-Z]+-[0-9]+$", query_str.upper().strip()))
 
 
-# Sanitize query string by removing quotes
-def sanitize_query_str(query_str: str) -> str:
-    return re.sub(r'["]', "", query_str).strip()
+# Sanitize a value for use in a JQL string
+def sanitize_jql_value(jql_value: str) -> str:
+    return re.sub(r'["]', "", jql_value).strip()
+
+
+# Like the str.format() method, but sanitizes variable values into a given JQL
+# string
+def interpolate_variables_into_jql(jql_str: str, **variables: str) -> str:
+    return jql_str.format(
+        **{name: sanitize_jql_value(value) for name, value in variables.items()}
+    )
 
 
 # Construct the JQL expression used to search for issues matching the given
 # query string
 def get_search_jql(query_str: str) -> str:
     if is_issue_key(query_str):
-        return f'issuekey = "{sanitize_query_str(query_str)}"'
+        return interpolate_variables_into_jql(
+            'issuekey = "{query_str}"', query_str=query_str
+        )
     else:
-        return f'summary ~ "{sanitize_query_str(query_str)}*" AND lastViewed IS NOT NULL ORDER BY lastViewed DESC'  # noqa: E501
+        return interpolate_variables_into_jql(
+            'summary ~ "{query_str}*" AND lastViewed IS NOT NULL ORDER BY lastViewed DESC',  # noqa: E501
+            query_str=query_str,
+        )
 
 
 # Retrieves search resylts matching the given query
