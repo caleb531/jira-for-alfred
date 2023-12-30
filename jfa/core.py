@@ -78,13 +78,25 @@ def fetch_data(endpoint_path: str, params: Optional[dict] = None) -> list:
             "Authorization": get_authorization_header(),
         },
     )
-    response = urlrequest.urlopen(request, timeout=REQUEST_CONNECTION_TIMEOUT)
-    url_content = response.read()
+    try:
+        response = urlrequest.urlopen(request, timeout=REQUEST_CONNECTION_TIMEOUT)
+        url_content = response.read()
 
-    # Decompress response body if gzipped
-    if response.info().get("Content-Encoding") == "gzip":
-        str_buf = BytesIO(url_content)
-        with GzipFile(fileobj=str_buf, mode="rb") as gzip_file:
-            url_content = gzip_file.read()
+        # Decompress response body if gzipped
+        if response.info().get("Content-Encoding") == "gzip":
+            str_buf = BytesIO(url_content)
+            with GzipFile(fileobj=str_buf, mode="rb") as gzip_file:
+                url_content = gzip_file.read()
+
+    except urlrequest.HTTPError as error:
+        if error.code == 400:
+            # A 400 Bad Request can occur because an issue with the specified
+            # key does not exist; in this scenario, consider there to be no
+            # results found
+            url_content = json.dumps({"issues": []}).encode("utf-8")
+        else:
+            # Otherwise, let the error be re-raised (so that the list_issues
+            # module can handle what happens, if it chooses)
+            raise error
 
     return json.loads(url_content.decode("utf-8"))["issues"]
