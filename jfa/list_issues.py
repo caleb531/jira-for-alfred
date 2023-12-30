@@ -89,7 +89,7 @@ def get_search_jql(query_str: str) -> str:
         )
     else:
         return interpolate_variables_into_jql(
-            'summary ~ "{query_str}*" AND lastViewed IS NOT NULL ORDER BY lastViewed DESC',  # noqa: E501
+            'summary ~ "{query_str}*" ORDER BY lastViewed DESC',  # noqa: E501
             query_str=query_str,
         )
 
