@@ -70,7 +70,7 @@ def is_issue_key(query_str: str) -> bool:
 
 # Sanitize a value for use in a JQL string
 def sanitize_jql_value(jql_value: str) -> str:
-    return re.sub(r'["]', "", jql_value).strip()
+    return re.sub(r'["\\]', "", jql_value).strip()
 
 
 # Like the str.format() method, but sanitizes variable values into a given JQL
