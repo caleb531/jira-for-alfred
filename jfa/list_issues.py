@@ -10,23 +10,23 @@ from jfa.types import Issue, Result
 # The maximum number of results to list
 MAX_RESULT_COUNT = 9
 
-# The issue types supported by this workflow
-SUPPORTED_ISSUE_TYPES = {
-    "bug",
-    "sub-task",
-    "task",
-    "scenario",
-    "test",
-    "epic",
-    "story",
+# A map of the issue types supported by this workflow
+issue_type_icon_map = {
+    "bug": "jfa/icons/bug.svg",
+    "sub-task": "jfa/icons/subtask.svg",
+    "task": "jfa/icons/task.svg",
+    "scenario": "jfa/icons/scenario.svg",
+    "test": "jfa/icons/test.png",
+    "epic": "jfa/icons/epic.svg",
+    "story": "jfa/icons/story.svg",
 }
 
 
 # Retrieve the path to the icon for the given issue type; if an issue type is
 # unsupported by this workflow, then the default workflow icon will be used
 def get_issue_type_icon(issue_type: str) -> str:
-    if issue_type in SUPPORTED_ISSUE_TYPES:
-        return f"jfa/icons/{issue_type}.svg"
+    if issue_type in issue_type_icon_map:
+        return issue_type_icon_map[issue_type]
     else:
         return "icon.png"
 
