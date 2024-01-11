@@ -50,6 +50,18 @@ The main usage of the workflow is through the `jira` keyword. With it, you can s
 3. Hold down the *Option* key to copy the issue's URL
 3. Hold down the *Shift* key to copy the issue summary (*e.g.* "Fix the thing")
 
+## Restricting searches to specific projects
+
+You can optionally restrict your search to one or more projects using the
+**Restrict to Projects** configuration option within the workflow's settings).
+This provides another way to cut down on the number of issues you might be
+presented with.
+
+To use it, enter a comma-separated list of project keys (e.g. if you want
+tickets like ABC-123 and DEF-234, then enter "ABC, DEF" into the field). If you
+leave the field blank, then you get the default behavior of searching across all
+projects your Jira account has access to.
+
 ## Disclaimer
 
 This project is not affiliated with Atlassian, and the Jira icons used in this
