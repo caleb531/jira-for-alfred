@@ -1,6 +1,6 @@
 # Jira for Alfred
 
-*Copyright 2023 Caleb Evans*  
+*Copyright 2023-2024 Caleb Evans*  
 *Released under the MIT license*
 
 This Alfred workflow allows you to quickly search for and open any Jira ticket
