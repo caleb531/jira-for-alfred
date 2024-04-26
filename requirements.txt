@@ -1,4 +1,4 @@
-alfred-workflow-packager==3.0.1
+alfred-workflow-packager==3.1.1
 attrs==23.1.0
 black==23.11.0
 click==8.1.7
