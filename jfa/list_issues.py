@@ -102,6 +102,15 @@ def get_search_jql(query_str: str) -> str:
         return get_project_filter() + interpolate_variables_into_jql(
             'issuekey = "{query_str}"', query_str=query_str
         )
+    elif not query_str:
+        return (
+            # Per the Jira Operator documentation for `WAS`, the operator will
+            # match issues "that currently have or previously had the specified
+            # value for the specified field" (source:
+            # <https://support.atlassian.com/jira-software-cloud/docs/jql-operators/#WAS>)
+            get_project_filter()
+            + "assignee WAS currentuser() ORDER BY lastViewed DESC"
+        )
     else:
         return get_project_filter() + interpolate_variables_into_jql(
             'summary ~ "{query_str}*" ORDER BY lastViewed DESC',
@@ -127,6 +136,9 @@ def get_result_list(query_str: str) -> list[Result]:
 
 
 def main(query_str: str) -> None:
+    # Normalize query string by stripping leading/trailing whitespace
+    query_str = query_str.strip()
+
     # If query string appears to be a URL to a Jira issue, convert it to an
     # issue key, then search using that issue key
     if is_issue_url(query_str):
@@ -147,4 +159,4 @@ def main(query_str: str) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1] if len(sys.argv) >= 2 else "")
