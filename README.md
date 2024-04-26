@@ -62,6 +62,11 @@ tickets like ABC-123 and DEF-234, then enter "ABC, DEF" into the field). If you
 leave the field blank, then you get the default behavior of searching across all
 projects your Jira account has access to.
 
+## Viewing recently-worked-on issues
+
+If you do not pass a search query to the `jira` keyword, the workflow will
+automatically display your recently-worked-on issues.
+
 ## Disclaimer
 
 This project is not affiliated with Atlassian, and the Jira icons used in this
