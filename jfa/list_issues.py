@@ -9,7 +9,7 @@ import jfa.core as core
 from jfa.types import Issue, Result
 
 # The maximum number of results to list
-MAX_RESULT_COUNT = 9
+MAX_RESULT_COUNT = int(os.environ.get("jira_max_result_count", "9"))
 
 # A map of the issue types supported by this workflow
 issue_type_icon_map = {
