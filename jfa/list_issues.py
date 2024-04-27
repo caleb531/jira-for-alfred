@@ -14,7 +14,7 @@ MAX_RESULT_COUNT = int(os.environ.get("jira_max_result_count", "9"))
 # A map of the issue types supported by this workflow
 issue_type_icon_map = {
     "bug": "jfa/icons/bug.svg",
-    "sub-task": "jfa/icons/subtask.svg",
+    "sub-task": "jfa/icons/sub-task.svg",
     "task": "jfa/icons/task.svg",
     "scenario": "jfa/icons/scenario.svg",
     "test": "jfa/icons/test.png",
