@@ -108,7 +108,7 @@ def get_search_jql(query_str: str) -> str:
             + "assignee WAS currentuser() ORDER BY lastViewed DESC"
         )
     elif is_issue_key(query_str):
-        return get_project_filter() + interpolate_variables_into_jql(
+        return interpolate_variables_into_jql(
             'issuekey = "{query_str}"', query_str=query_str
         )
     else:
