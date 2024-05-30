@@ -70,4 +70,4 @@ automatically display your recently-worked-on issues.
 ## Disclaimer
 
 This project is not affiliated with Atlassian, and the Jira icons used in this
-project is property of Atlassian.
+project are property of Atlassian.
