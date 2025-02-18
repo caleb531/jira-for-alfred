@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5.2 (25235) - http://www.bohemiancoding.com/sketch -->
+    <title>access_request</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="access_request" sketch:type="MSArtboardGroup">
+            <g id="Access-request" sketch:type="MSLayerGroup" transform="translate(1.000000, 1.000000)">
+                <rect id="Rectangle-36" fill="#F79232" sketch:type="MSShapeGroup" x="0" y="0" width="14" height="14" rx="2"></rect>
+                <path d="M8,6 L8,5.0093689 C8,4.44335318 7.55228475,4 7,4 C6.44386482,4 6,4.45190985 6,5.0093689 L6,6 L8,6 Z M5,6 L4.99077797,6 C4.45097518,6 4,6.44762906 4,6.99980749 L4,10.0001925 C4,10.5562834 4.44358641,11 4.99077797,11 L9.00922203,11 C9.54902482,11 10,10.5523709 10,10.0001925 L10,6.99980749 C10,6.44371665 9.55641359,6 9.00922203,6 L9,6 L9,5.00591905 C9,3.88655484 8.1045695,3 7,3 C5.88772964,3 5,3.89808055 5,5.00591905 L5,6 Z" id="Rectangle-41" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>

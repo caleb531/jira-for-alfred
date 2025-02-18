@@ -20,6 +20,8 @@ issue_type_icon_map = {
     "test": "jfa/icons/test.png",
     "epic": "jfa/icons/epic.svg",
     "story": "jfa/icons/story.svg",
+    "security task": "jfa/icons/security_task.svg",
+    "release content": "jfa/icons/release_content.svg"
 }
 
 
