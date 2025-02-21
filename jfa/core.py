@@ -14,7 +14,9 @@ from typing import Optional, Sequence
 from jfa.types import Result
 
 # Unique identifier for the workflow bundle
-WORKFLOW_BUNDLE_ID = "com.calebevans.jiraforalfred"
+WORKFLOW_BUNDLE_ID = os.environ.get(
+    "alfred_workflow_bundleid", "com.calebevans.jiraforalfred"
+)
 
 # The base URL for the Jira account
 ACCOUNT_BASE_URL = re.sub(r"/$", "", os.environ.get("jira_base_url", ""))
