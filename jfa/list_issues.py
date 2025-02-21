@@ -13,25 +13,25 @@ MAX_RESULT_COUNT = int(os.environ.get("jira_max_result_count", "9"))
 
 # A map of the issue types supported by this workflow
 issue_type_icon_map = {
-    "bug": "jfa/icons/bug.svg",
-    "sub-task": "jfa/icons/sub-task.svg",
-    "task": "jfa/icons/task.svg",
-    "scenario": "jfa/icons/scenario.svg",
-    "test": "jfa/icons/test.png",
-    "epic": "jfa/icons/epic.svg",
-    "story": "jfa/icons/story.svg",
-    "security task": "jfa/icons/security_task.svg",
-    "release content": "jfa/icons/release_content.svg",
+    "bug": "jfa/icons/10303.svg",
+    "sub-task": "jfa/icons/10316.svg",
+    "task": "jfa/icons/10318.svg",
+    "epic": "jfa/icons/10307.svg",
+    "story": "jfa/icons/10315.svg",
 }
 
 
 # Retrieve the path to the icon for the given issue type; if an issue type is
 # unsupported by this workflow, then the default workflow icon will be used
-def get_issue_type_icon(issue_type: str) -> str:
+def get_issue_type_icon(issue: Issue) -> str:
+    avatar_id = issue["fields"].get("issuetype", {}).get("avatarId")
+    icon_path = f"jfa/icons/{avatar_id}.svg"
+    if avatar_id and os.path.exists(icon_path):
+        return icon_path
+    issue_type = issue["fields"]["issuetype"]["name"].lower()
     if issue_type in issue_type_icon_map:
         return issue_type_icon_map[issue_type]
-    else:
-        return "icon.png"
+    return "icon.png"
 
 
 # Construct the URL for the issue with the given key
@@ -47,7 +47,7 @@ def get_result_from_issue(issue: Issue) -> Result:
         "title": issue["fields"]["summary"],
         "subtitle": f"{issue['key']} (view in Jira)",
         "arg": issue["id"],
-        "icon": {"path": get_issue_type_icon(issue_type)},
+        "icon": {"path": get_issue_type_icon(issue)},
         "variables": {
             "issue_id": issue["id"],
             "issue_key": issue["key"],

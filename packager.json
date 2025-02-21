@@ -6,6 +6,6 @@
   "resources": [
     "icon.png",
     "jfa/*.*",
-    "jfa/icons/*.*"
+    "jfa/icons/*"
   ]
 }
