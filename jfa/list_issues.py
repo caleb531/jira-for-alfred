@@ -2,8 +2,10 @@
 # coding=utf-8
 
 import os
+import os.path
 import re
 import sys
+from urllib.parse import urlparse
 
 import jfa.core as core
 from jfa.types import Issue, Result
@@ -13,9 +15,22 @@ MAX_RESULT_COUNT = int(os.environ.get("jira_max_result_count", "9"))
 
 # A map of the issue types supported by this workflow
 issue_type_icon_map = {
-    "bug": "jfa/icons/10303.svg",
-    "sub-task": "jfa/icons/10316.svg",
-    "task": "jfa/icons/10318.svg",
+    # Precache the icon paths based on the issue type icon ID; this allows us to
+    # perform the filesystem I/O once upfront, rather than for each result; this
+    # check is necessary because users can upload a custom PNG image as an issue
+    # type icon, whereas the `jfa/icons` directory only contains the stock Jira
+    # issue type icon SVGs
+    **{
+        os.path.splitext(icon_name)[0]: f"jfa/icons/{icon_name}"
+        for icon_name in os.listdir("jfa/icons")
+        # Exclude hidden files
+        if not icon_name.startswith(".")
+    },
+    # The icon URLs for the "Epic" and "Story" issue types have filenames
+    # "epic.svg" and "story.svg", respectively; these filenames diverge from the
+    # structure of the icon URLs for the other issue types, since those use the
+    # avatar ID as the filename (e.g. "12345"); therefore, we add special
+    # entries to the icon map to handle these two issue types
     "epic": "jfa/icons/10307.svg",
     "story": "jfa/icons/10315.svg",
 }
@@ -24,13 +39,11 @@ issue_type_icon_map = {
 # Retrieve the path to the icon for the given issue type; if an issue type is
 # unsupported by this workflow, then the default workflow icon will be used
 def get_issue_type_icon(issue: Issue) -> str:
-    avatar_id = issue["fields"].get("issuetype", {}).get("avatarId")
-    icon_path = f"jfa/icons/{avatar_id}.svg"
-    if avatar_id and os.path.exists(icon_path):
-        return icon_path
-    issue_type = issue["fields"]["issuetype"]["name"].lower()
-    if issue_type in issue_type_icon_map:
-        return issue_type_icon_map[issue_type]
+    issue_type_icon_key, _ = os.path.splitext(
+        os.path.basename(urlparse(issue["fields"]["issuetype"]["iconUrl"]).path)
+    )
+    if issue_type_icon_key in issue_type_icon_map:
+        return issue_type_icon_map[issue_type_icon_key]
     return "icon.png"
 
 

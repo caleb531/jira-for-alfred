@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-from typing import TypedDict
+from typing import Optional, TypedDict
 
 
 class IssueType(TypedDict):
     name: str
+    iconUrl: str
+    avatarId: Optional[str]
 
 
 class IssueFields(TypedDict):
