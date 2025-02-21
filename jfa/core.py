@@ -21,7 +21,7 @@ ACCOUNT_BASE_URL = re.sub(r"/$", "", os.environ.get("jira_base_url", ""))
 # The base URL for a Jira issue
 ISSUE_BASE_URL = f"{ACCOUNT_BASE_URL}/browse"
 # The base URL for the Jira Cloud Platform API
-API_BASE_URL = ACCOUNT_BASE_URL + "/rest/api/3"
+API_BASE_URL = f"{ACCOUNT_BASE_URL}/rest/api/3"
 # The User Agent used for all HTTP requests to the Jira Cloud Platform API
 REQUEST_USER_AGENT = "Jira for Alfred (Mozilla/5.0)"
 # The number of seconds to wait before timing out an HTTP request to the API
