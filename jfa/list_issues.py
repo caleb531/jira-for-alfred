@@ -114,14 +114,11 @@ def get_project_filter() -> str:
 # query string
 def get_search_jql(query_str: str) -> str:
     if not query_str:
-        return (
-            # Per the Jira Operator documentation for `WAS`, the operator will
-            # match issues "that currently have or previously had the specified
-            # value for the specified field" (source:
-            # <https://support.atlassian.com/jira-software-cloud/docs/jql-operators/#WAS>)
-            get_project_filter()
-            + "assignee WAS currentuser() ORDER BY lastViewed DESC"
-        )
+        # Per the Jira Operator documentation for `WAS`, the operator will match
+        # issues "that currently have or previously had the specified value for
+        # the specified field" (source:
+        # <https://support.atlassian.com/jira-software-cloud/docs/jql-operators/#WAS>)
+        return "assignee WAS currentuser() ORDER BY lastViewed DESC"
     elif is_issue_key(query_str):
         return interpolate_variables_into_jql(
             'issuekey = "{query_str}"', query_str=query_str
