@@ -93,14 +93,7 @@ def fetch_data(endpoint_path: str, params: Optional[dict] = None) -> list:
                 url_content = gzip_file.read()
 
     except urlrequest.HTTPError as error:
-        if error.code == 400:
-            # A 400 Bad Request can occur because an issue with the specified
-            # key does not exist; in this scenario, consider there to be no
-            # results found
-            url_content = json.dumps({"issues": []}).encode("utf-8")
-        else:
-            # Otherwise, let the error be re-raised (so that the list_issues
-            # module can handle what happens, if it chooses)
-            raise error
+        url_content = json.dumps({"issues": []}).encode("utf-8")
+        raise Exception(json.loads(error.read())["errorMessages"][0])
 
     return json.loads(url_content.decode("utf-8"))["issues"]

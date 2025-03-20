@@ -148,24 +148,33 @@ def get_result_list(query_str: str) -> list[Result]:
 
 
 def main(query_str: str) -> None:
-    # Normalize query string by stripping leading/trailing whitespace
-    query_str = query_str.strip()
+    try:
+        # Normalize query string by stripping leading/trailing whitespace
+        query_str = query_str.strip()
 
-    # If query string appears to be a URL to a Jira issue, convert it to an
-    # issue key, then search using that issue key
-    if is_issue_url(query_str):
-        query_str = query_str.replace(f"{core.ISSUE_BASE_URL}/", "")
+        # If query string appears to be a URL to a Jira issue, convert it to an
+        # issue key, then search using that issue key
+        if is_issue_url(query_str):
+            query_str = query_str.replace(f"{core.ISSUE_BASE_URL}/", "")
 
-    results = get_result_list(query_str)
+        results = get_result_list(query_str)
 
-    if not results:
-        results.append(
+        if not results:
+            results.append(
+                {
+                    "title": "No Results",
+                    "subtitle": "No issues matching '{}'".format(query_str),
+                    "valid": False,
+                }
+            )
+    except Exception as error:
+        results = [
             {
-                "title": "No Results",
-                "subtitle": "No issues matching '{}'".format(query_str),
+                "title": "No Issues Found",
+                "subtitle": str(error),
                 "valid": False,
             }
-        )
+        ]
 
     print(core.get_result_list_feedback_str(results))
 
