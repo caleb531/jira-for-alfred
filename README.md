@@ -26,7 +26,7 @@ footprint than full-blown Xcode.
 
 ## Usage
 
-## Configuration
+### Configuration
 
 In order to use the workflow, you must provide three bits of info:
 
@@ -40,7 +40,7 @@ workflow, and you can change them at any time.
 
 [api-tokens]: https://id.atlassian.com/manage-profile/security/api-tokens
 
-## Searching for issues
+### Searching for issues
 
 The main usage of the workflow is through the `jira` keyword. With it, you can search for a particular issue and perform different operations:
 
@@ -50,7 +50,7 @@ The main usage of the workflow is through the `jira` keyword. With it, you can s
 3. Hold down the *Option* key to copy the issue's URL
 3. Hold down the *Shift* key to copy the issue summary (*e.g.* "Fix the thing")
 
-## Restricting searches to specific projects
+### Restricting searches to specific projects
 
 You can optionally restrict your search to one or more projects using the
 **Restrict to Projects** configuration option within the workflow's settings).
@@ -62,7 +62,7 @@ tickets like ABC-123 and DEF-234, then enter "ABC, DEF" into the field). If you
 leave the field blank, then you get the default behavior of searching across all
 projects your Jira account has access to.
 
-## Viewing recently-worked-on issues
+### Viewing recently-worked-on issues
 
 If you do not pass a search query to the `jira` keyword, the workflow will
 automatically display your recently-worked-on issues.
