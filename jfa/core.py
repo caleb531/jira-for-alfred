@@ -78,6 +78,7 @@ def fetch_data(endpoint_path: str, params: Optional[dict] = None) -> list:
         request_url,
         headers={
             "User-Agent": REQUEST_USER_AGENT,
+            "Accept": "application/json",
             "Accept-Encoding": "gzip, deflate",
             "Authorization": get_authorization_header(),
         },
