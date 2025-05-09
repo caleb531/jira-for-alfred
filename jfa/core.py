@@ -87,6 +87,11 @@ def fetch_data(endpoint_path: str, params: Optional[dict] = None) -> list:
     except urlrequest.HTTPError as error:
         url_content = json.dumps({"issues": []}).encode("utf-8")
         error_dict = json.loads(error.read())
-        raise Exception(error_dict.get("errorMessages", error_dict.get("error", "")))
+        raise Exception(
+            error_dict.get(
+                "errorMessages",
+                error_dict.get("error", "An unexpected error occurred."),
+            )
+        )
 
     return json.loads(url_content.decode("utf-8"))["issues"]
