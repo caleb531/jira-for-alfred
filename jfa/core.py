@@ -7,8 +7,6 @@ import os
 import re
 import urllib.parse as urlparse
 import urllib.request as urlrequest
-from gzip import GzipFile
-from io import BytesIO
 from typing import Optional, Sequence
 
 from jfa.types import Result
@@ -79,7 +77,6 @@ def fetch_data(endpoint_path: str, params: Optional[dict] = None) -> list:
         headers={
             "User-Agent": REQUEST_USER_AGENT,
             "Accept": "application/json",
-            "Accept-Encoding": "gzip, deflate",
             "Authorization": get_authorization_header(),
         },
     )
@@ -87,14 +84,9 @@ def fetch_data(endpoint_path: str, params: Optional[dict] = None) -> list:
         response = urlrequest.urlopen(request, timeout=REQUEST_CONNECTION_TIMEOUT)
         url_content = response.read()
 
-        # Decompress response body if gzipped
-        if response.info().get("Content-Encoding") == "gzip":
-            str_buf = BytesIO(url_content)
-            with GzipFile(fileobj=str_buf, mode="rb") as gzip_file:
-                url_content = gzip_file.read()
-
     except urlrequest.HTTPError as error:
         url_content = json.dumps({"issues": []}).encode("utf-8")
-        raise Exception(json.loads(error.read())["errorMessages"][0])
+        error_dict = json.loads(error.read())
+        raise Exception(error_dict.get("errorMessages", error_dict.get("error", "")))
 
     return json.loads(url_content.decode("utf-8"))["issues"]
