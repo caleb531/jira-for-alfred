@@ -12,6 +12,7 @@ from jfa.types import Issue, Result
 
 # The maximum number of results to list
 MAX_RESULT_COUNT = int(os.environ.get("jira_max_result_count", "9"))
+USE_PREPEND = os.environ.get("jira_prepend_with_project", "")
 
 # A map of the issue types supported by this workflow
 issue_type_icon_map = {
@@ -80,9 +81,27 @@ def is_issue_url(query_str: str) -> bool:
 # Return a boolean indicating whether or not the given query string is formatted
 # like an issue key
 def is_issue_key(query_str: str) -> bool:
-    return bool(re.search(r"^[A-Z]+-[0-9]+$", query_str.upper().strip()))
+    return bool(re.search(r"^[A-Z]+-[0-9]+$", query_str.upper().strip())) or bool(re.search(r"^[0-9]+$", query_str.upper().strip())) 
 
+"""
+Converts a numeric query string to a JIRA issue key format.
 
+If the input string consists only of digits, it prefixes the string with "SIG-".
+Otherwise, it returns the input string unchanged.
+
+Args:
+    query_str (str): The query string to convert.
+
+Returns:
+    str: The JIRA issue key if the input is numeric, otherwise the original string.
+"""
+def convert_numeric_to_issue_key(query_str: str) -> str:
+    if query_str.isnumeric():
+        #print(("jira_prepend_with_project","") + query_str)
+        return os.environ.get("jira_prepend_with_project","") + query_str
+    else:
+        return query_str
+    
 # Sanitize a value for use in a JQL string
 def sanitize_jql_value(jql_value: str) -> str:
     return re.sub(r'["\\]', "", jql_value).strip()
@@ -121,7 +140,7 @@ def get_search_jql(query_str: str) -> str:
         return "assignee WAS currentuser() ORDER BY lastViewed DESC"
     elif is_issue_key(query_str):
         return interpolate_variables_into_jql(
-            'issuekey = "{query_str}"', query_str=query_str
+            'issuekey = "{query_str}"', query_str=(convert_numeric_to_issue_key(query_str))
         )
     else:
         return get_project_filter() + interpolate_variables_into_jql(
