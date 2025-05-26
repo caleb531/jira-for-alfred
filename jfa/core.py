@@ -21,7 +21,10 @@ ACCOUNT_BASE_URL = re.sub(r"/$", "", os.environ.get("jira_base_url", ""))
 # The base URL for a Jira issue
 ISSUE_BASE_URL = f"{ACCOUNT_BASE_URL}/browse"
 # The base URL for the Jira Cloud Platform API
-API_BASE_URL = f"{ACCOUNT_BASE_URL}/rest/api/3"
+if os.environ.get("jira_use_v9_lts") == "1":
+    API_BASE_URL = f"{ACCOUNT_BASE_URL}/rest/api/2"
+else:
+    API_BASE_URL = f"{ACCOUNT_BASE_URL}/rest/api/3"
 # The User Agent used for all HTTP requests to the Jira Cloud Platform API
 REQUEST_USER_AGENT = "Jira for Alfred (Mozilla/5.0)"
 # The number of seconds to wait before timing out an HTTP request to the API
@@ -54,15 +57,21 @@ def get_result_list_feedback_str(results: Sequence[Result]) -> str:
 
 # Return the value used for the Authorization header on every API request
 def get_authorization_header() -> str:
-    return "{auth_type} {auth_credentials}".format(
-        auth_type="Basic",
-        auth_credentials=base64.standard_b64encode(
-            "{id}:{secret}".format(
-                id=str(os.environ.get("jira_username")).strip(),
-                secret=str(os.environ.get("jira_api_token")).strip(),
-            ).encode("utf-8")
-        ).decode("utf-8"),
-    )
+    if os.environ.get("jira_use_v9_lts") == "1":
+        return "{auth_type} {auth_credentials}".format(
+            auth_type="Bearer",
+            auth_credentials=str(os.environ.get("jira_api_token")).strip(),
+        )
+    else:
+        return "{auth_type} {auth_credentials}".format(
+            auth_type="Basic",
+            auth_credentials=base64.standard_b64encode(
+                "{id}:{secret}".format(
+                    id=str(os.environ.get("jira_username")).strip(),
+                    secret=str(os.environ.get("jira_api_token")).strip(),
+                ).encode("utf-8")
+            ).decode("utf-8"),
+        )
 
 
 # Fetch data from the Jira Cloud Platform API, optionally along with the dict of
