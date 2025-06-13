@@ -147,7 +147,7 @@ def get_search_jql(query_str: str) -> str:
     elif is_issue_key(query_str):
         return interpolate_variables_into_jql(
             'issuekey = "{query_str}"',
-            query_str=(convert_numeric_to_issue_key(query_str)),
+            query_str=convert_numeric_to_issue_key(query_str),
         )
     else:
         return get_project_filter() + interpolate_variables_into_jql(
