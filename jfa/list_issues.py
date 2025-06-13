@@ -86,24 +86,13 @@ def is_issue_key(query_str: str) -> bool:
     )
 
 
-"""
-Converts a numeric query string to a JIRA issue key format.
-
-If the input string consists only of digits, it prefixes the string with "SIG-".
-Otherwise, it returns the input string unchanged.
-
-Args:
-    query_str (str): The query string to convert.
-
-Returns:
-    str: The JIRA issue key if the input is numeric, otherwise the original string.
-"""
-
-
+# Convert a numeric query string to an issue key by prepending the project ID;
+# otherwise, just return the query string as-is since it already represents a #
+# valid issue key
 def convert_numeric_to_issue_key(query_str: str) -> str:
-    if query_str.isnumeric():
-        # print(("jira_prepend_with_project","") + query_str)
-        return os.environ.get("jira_prepend_with_project", "") + query_str
+    project_id = os.environ.get("jira_prepend_with_project", "").replace("-", "")
+    if query_str.isnumeric() and project_id:
+        return f"{project_id}-{query_str}"
     else:
         return query_str
 
