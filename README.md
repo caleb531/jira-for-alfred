@@ -60,7 +60,7 @@ you can perform any of the following actions:
 ### Restricting searches to specific projects
 
 You can optionally restrict your search to one or more projects using the
-**Restrict to Projects** configuration option within the workflow's settings).
+**Restrict to Projects** configuration option within the workflow's settings.
 This provides another way to cut down on the number of issues you might be
 presented with.
 
