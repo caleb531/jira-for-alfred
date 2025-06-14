@@ -74,6 +74,23 @@ projects your Jira account has access to.
 If you do not pass a search query to the `jira` keyword, the workflow will
 automatically display your recently-worked-on issues.
 
+### On-premise users
+
+If you are an on-premise user using the 9.12.x LTS datacenter/server edition of
+Jira, then enable the **Use Jira 9.12.x LTS** configuration option within the
+workflow's settings. This should fix any errors with loading issues.
+
+### Quicker issue lookup for single-project setups
+
+If you only have a single project for which you wish to look up issues, then
+specify the project key in the **Prepend Number-Only Queries with Project Key**
+configuration option within the workflow's settings. This will allow you to
+specify number-only queries (e.g. `jira 123`), and the project key will
+automatically be prepended (with a dash) to the number you specify.
+
+For example, if you specify `PROJ` as your project key to prepend, then type
+`jira 123` into Alfred, the issue `PROJ-123` will be retrieved.
+
 ## Disclaimer
 
 This project is not affiliated with Atlassian, and the Jira icons used in this
