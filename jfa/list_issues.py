@@ -57,9 +57,10 @@ def get_issue_url(issue_key: str) -> str:
 # feedback result dictionary
 def get_result_from_issue(issue: Issue) -> Result:
     issue_type = issue["fields"]["issuetype"]["name"].lower()
+    status_name = issue["fields"]["status"]["name"]
     return {
         "title": issue["fields"]["summary"],
-        "subtitle": f"{issue['key']} (view in Jira)",
+        "subtitle": f"{issue['key']} • {status_name} (view in Jira)",
         "arg": issue["id"],
         "icon": {"path": get_issue_type_icon(issue)},
         "variables": {
@@ -68,6 +69,7 @@ def get_result_from_issue(issue: Issue) -> Result:
             "issue_type": issue_type,
             "issue_summary": issue["fields"]["summary"],
             "issue_url": get_issue_url(issue["key"]),
+            "issue_status": status_name,
         },
     }
 
@@ -152,7 +154,7 @@ def get_result_list(query_str: str) -> list[Result]:
     issues = core.fetch_data(
         "/search",
         params={
-            "fields": "summary,issuetype",
+            "fields": "summary,issuetype,status",
             "jql": get_search_jql(query_str),
             "maxResults": MAX_RESULT_COUNT,
         },

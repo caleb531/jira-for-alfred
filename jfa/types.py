@@ -9,9 +9,14 @@ class IssueType(TypedDict):
     avatarId: Optional[str]
 
 
+class IssueStatus(TypedDict):
+    name: str
+
+
 class IssueFields(TypedDict):
     summary: str
     issuetype: IssueType
+    status: IssueStatus
 
 
 class Issue(TypedDict):
@@ -30,6 +35,7 @@ class ResultVariables(TypedDict):
     issue_type: str
     issue_summary: str
     issue_url: str
+    issue_status: str
 
 
 class ResultText(TypedDict, total=False):
