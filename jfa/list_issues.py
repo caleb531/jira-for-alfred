@@ -60,7 +60,7 @@ def get_result_from_issue(issue: Issue) -> Result:
     status_name = issue["fields"]["status"]["name"]
     return {
         "title": issue["fields"]["summary"],
-        "subtitle": f"{issue['key']} • {status_name} (view in Jira)",
+        "subtitle": f"{issue['key']} • {status_name}",
         "arg": issue["id"],
         "icon": {"path": get_issue_type_icon(issue)},
         "variables": {
