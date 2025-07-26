@@ -142,7 +142,7 @@ def get_search_jql(query_str: str) -> str:
         )
     else:
         return get_project_filter() + interpolate_variables_into_jql(
-            'summary ~ "{query_str}*" ORDER BY lastViewed DESC',
+            'summary ~ "{query_str}*" AND status != "Closed" ORDER BY lastViewed DESC',
             query_str=query_str,
         )
 
