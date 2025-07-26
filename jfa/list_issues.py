@@ -56,20 +56,32 @@ def get_issue_url(issue_key: str) -> str:
 # Convert the given dictionary representation of a Jira issue to a Alfred
 # feedback result dictionary
 def get_result_from_issue(issue: Issue) -> Result:
-    issue_type = issue["fields"]["issuetype"]["name"].lower()
-    status_name = issue["fields"]["status"]["name"]
+    fields = issue.get("fields", {})
+    issue_type = fields.get("issuetype", {}).get("name", "").lower()
+    issue_key = issue.get("key", "")
+    issue_summary = fields.get("summary", "")
+    status = fields.get("status", {}).get("name", "")
+    parent = fields.get("parent")
+    parent_key = parent.get("fields", {}).get("key") if parent else None
+    parent_summary = parent.get("fields", {}).get("summary") if parent else None
+
+    subtitle = f"{issue_key} • {status}"
+    if parent_summary:
+        subtitle += f" • {parent_summary}"
+
     return {
-        "title": issue["fields"]["summary"],
-        "subtitle": f"{issue['key']} ({status_name})",
-        "arg": issue["id"],
+        "title": issue_summary,
+        "subtitle": subtitle + " (view in Jira)",
+        "arg": issue.get("id", ""),
         "icon": {"path": get_issue_type_icon(issue)},
         "variables": {
-            "issue_id": issue["id"],
-            "issue_key": issue["key"],
+            "issue_id": issue.get("id", ""),
+            "issue_key": issue_key,
             "issue_type": issue_type,
-            "issue_summary": issue["fields"]["summary"],
-            "issue_url": get_issue_url(issue["key"]),
-            "issue_status": status_name,
+            "issue_summary": issue_summary,
+            "issue_url": get_issue_url(issue_key),
+            "parent_key": parent_key,
+            "parent_summary": parent_summary,
         },
     }
 
@@ -154,7 +166,7 @@ def get_result_list(query_str: str) -> list[Result]:
     issues = core.fetch_data(
         "/search",
         params={
-            "fields": "summary,issuetype,status",
+            "fields": "summary,issuetype,status,parent",
             "jql": get_search_jql(query_str),
             "maxResults": MAX_RESULT_COUNT,
         },
