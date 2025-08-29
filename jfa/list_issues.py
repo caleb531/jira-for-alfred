@@ -152,7 +152,7 @@ def get_result_list(query_str: str) -> list[Result]:
     query_str = query_str.lower()
 
     issues = core.fetch_data(
-        "/search",
+        "/search" if os.environ.get("jira_use_v9_lts") == "1" else "/search/jql",
         params={
             "fields": "summary,issuetype,status",
             "jql": get_search_jql(query_str),
