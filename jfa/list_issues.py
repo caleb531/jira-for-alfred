@@ -56,16 +56,20 @@ def get_issue_url(issue_key: str) -> str:
 # Convert the given dictionary representation of a Jira issue to a Alfred
 # feedback result dictionary
 def get_result_from_issue(issue: Issue) -> Result:
-    fields = issue.get("fields", {})
+    fields = issue["fields"]
 
-    issue_type = fields.get("issuetype", {}).get("name", "").lower()
-    issue_key = issue.get("key", "")
-    issue_summary = fields.get("summary", "")
-    issue_status = fields.get("status", {}).get("name", "")
+    issue_type = fields["issuetype"]["name"].lower()
+    issue_key = issue["key"]
+    issue_summary = fields["summary"]
+    issue_status = fields["status"]["name"]
 
     parent = fields.get("parent")
-    parent_key = parent.get("fields", {}).get("key") if parent else None
-    parent_summary = parent.get("fields", {}).get("summary") if parent else None
+    parent_key = None
+    parent_summary = None
+    if parent:
+        parent_fields = parent["fields"]
+        parent_key = parent_fields.get("key")
+        parent_summary = parent_fields.get("summary")
 
     subtitle = f"{issue_key} ({issue_status})"
     if parent_summary:
@@ -74,10 +78,10 @@ def get_result_from_issue(issue: Issue) -> Result:
     return {
         "title": issue_summary,
         "subtitle": subtitle,
-        "arg": issue.get("id", ""),
+        "arg": issue["id"],
         "icon": {"path": get_issue_type_icon(issue)},
         "variables": {
-            "issue_id": issue.get("id", ""),
+            "issue_id": issue["id"],
             "issue_key": issue_key,
             "issue_type": issue_type,
             "issue_summary": issue_summary,

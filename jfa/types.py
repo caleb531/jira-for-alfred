@@ -2,6 +2,14 @@
 
 from typing import Optional, TypedDict
 
+class ParentFields(TypedDict):
+    key: str
+    summary: str
+
+
+class Parent(TypedDict):
+    fields: ParentFields
+
 
 class IssueType(TypedDict):
     name: str
@@ -17,6 +25,7 @@ class IssueFields(TypedDict):
     summary: str
     issuetype: IssueType
     status: IssueStatus
+    parent: Optional[Parent]
 
 
 class Issue(TypedDict):
@@ -36,6 +45,8 @@ class ResultVariables(TypedDict):
     issue_summary: str
     issue_url: str
     issue_status: str
+    parent_key: Optional[str]
+    parent_summary: Optional[str]
 
 
 class ResultText(TypedDict, total=False):
