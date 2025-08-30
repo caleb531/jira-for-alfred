@@ -2,6 +2,7 @@
 
 from typing import Optional, TypedDict
 
+
 class ParentFields(TypedDict):
     key: str
     summary: str
