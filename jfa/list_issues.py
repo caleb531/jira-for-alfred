@@ -57,21 +57,23 @@ def get_issue_url(issue_key: str) -> str:
 # feedback result dictionary
 def get_result_from_issue(issue: Issue) -> Result:
     fields = issue.get("fields", {})
+
     issue_type = fields.get("issuetype", {}).get("name", "").lower()
     issue_key = issue.get("key", "")
     issue_summary = fields.get("summary", "")
-    status = fields.get("status", {}).get("name", "")
+    issue_status = fields.get("status", {}).get("name", "")
+
     parent = fields.get("parent")
     parent_key = parent.get("fields", {}).get("key") if parent else None
     parent_summary = parent.get("fields", {}).get("summary") if parent else None
 
-    subtitle = f"{issue_key} • {status}"
+    subtitle = f"{issue_key} ({issue_status})"
     if parent_summary:
-        subtitle += f" • {parent_summary}"
+        subtitle += f" - {parent_summary}"
 
     return {
         "title": issue_summary,
-        "subtitle": subtitle + " (view in Jira)",
+        "subtitle": subtitle,
         "arg": issue.get("id", ""),
         "icon": {"path": get_issue_type_icon(issue)},
         "variables": {
@@ -80,6 +82,7 @@ def get_result_from_issue(issue: Issue) -> Result:
             "issue_type": issue_type,
             "issue_summary": issue_summary,
             "issue_url": get_issue_url(issue_key),
+            "issue_status": issue_status,
             "parent_key": parent_key,
             "parent_summary": parent_summary,
         },
