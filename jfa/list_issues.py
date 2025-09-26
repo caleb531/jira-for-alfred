@@ -5,6 +5,7 @@ import os
 import os.path
 import re
 import sys
+import unicodedata
 from urllib.parse import urlparse
 
 import jfa.core as core
@@ -167,7 +168,7 @@ def get_result_list(query_str: str) -> list[Result]:
 def main(query_str: str) -> None:
     try:
         # Normalize query string by stripping leading/trailing whitespace
-        query_str = query_str.strip()
+        query_str = unicodedata.normalize("NFC", query_str.strip())
 
         # If query string appears to be a URL to a Jira issue, convert it to an
         # issue key, then search using that issue key
