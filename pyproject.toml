@@ -1,6 +1,6 @@
 [project]
 name = "jira-for-alfred"
-version = "2.10.0"
+version = "2.10.1"
 description = "An Alfred workflow for quickly searching for and opening Jira tickets."
 readme = "README.md"
 requires-python = ">=3.9"
