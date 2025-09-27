@@ -3,13 +3,13 @@
 from typing import Optional, TypedDict
 
 
-class ParentFields(TypedDict):
+class ParentIssueFields(TypedDict):
     key: str
     summary: str
 
 
-class Parent(TypedDict):
-    fields: ParentFields
+class ParentIssue(TypedDict):
+    fields: ParentIssueFields
 
 
 class IssueType(TypedDict):
@@ -26,7 +26,7 @@ class IssueFields(TypedDict):
     summary: str
     issuetype: IssueType
     status: IssueStatus
-    parent: Optional[Parent]
+    parent: Optional[ParentIssue]
 
 
 class Issue(TypedDict):
