@@ -3,6 +3,15 @@
 from typing import Optional, TypedDict
 
 
+class ParentIssueFields(TypedDict):
+    key: str
+    summary: str
+
+
+class ParentIssue(TypedDict):
+    fields: ParentIssueFields
+
+
 class IssueType(TypedDict):
     name: str
     iconUrl: str
@@ -17,6 +26,7 @@ class IssueFields(TypedDict):
     summary: str
     issuetype: IssueType
     status: IssueStatus
+    parent: Optional[ParentIssue]
 
 
 class Issue(TypedDict):
@@ -36,6 +46,8 @@ class ResultVariables(TypedDict):
     issue_summary: str
     issue_url: str
     issue_status: str
+    parent_key: Optional[str]
+    parent_summary: Optional[str]
 
 
 class ResultText(TypedDict, total=False):
