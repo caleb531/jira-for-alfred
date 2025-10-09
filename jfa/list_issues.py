@@ -101,9 +101,10 @@ def is_issue_url(query_str: str) -> bool:
 
 
 # Return a boolean indicating whether or not the given query string is formatted
-# like an issue key
+# like an issue key; format is based on Jira's official issue key rules found in
+# <https://confluence.atlassian.com/adminjiraserver/changing-the-project-key-format-938847081.html>
 def is_issue_key(query_str: str) -> bool:
-    return bool(re.search(r"^[A-Z]+-[0-9]+$", query_str.upper().strip())) or bool(
+    return bool(re.search(r"^[A-Z][A-Z0-9_]+-\d+$", query_str.upper().strip())) or bool(
         re.search(r"^[0-9]+$", query_str.upper().strip())
     )
 
