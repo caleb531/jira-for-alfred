@@ -7,9 +7,9 @@ import os
 import re
 import urllib.parse as urlparse
 import urllib.request as urlrequest
-from typing import Optional, Sequence
+from typing import Optional, Sequence, cast
 
-from jfa.types import Result
+from jfa.types import Result, ResultMod, ResultMods, ResultText
 
 # Unique identifier for the workflow bundle
 WORKFLOW_BUNDLE_ID = os.environ.get(
@@ -35,15 +35,17 @@ REQUEST_CONNECTION_TIMEOUT = 5
 def get_result_list_feedback_item(result: Result) -> Result:
     item = result.copy()
 
-    item["text"] = result.get("text", {}).copy()
+    item["text"] = result.get("text", cast(ResultText, {})).copy()
     # Text copied to clipboard when cmd-c is invoked for this result
     item["text"]["copy"] = item["text"].get("copy", result["title"])
     # Text shown when invoking Large Type for this result
     item["text"]["largetype"] = item["text"].get("largetype", result["title"])
 
     # Use different args when different modifiers are pressed
-    item["mods"] = result.get("mods", {}).copy()
-    item["mods"]["ctrl"] = item["mods"].get("ctrl", {"arg": result["title"]})
+    item["mods"] = result.get("mods", cast(ResultMods, {})).copy()
+    item["mods"]["ctrl"] = item["mods"].get(
+        "ctrl", cast(ResultMod, {"arg": result["title"]})
+    )
 
     return item
 

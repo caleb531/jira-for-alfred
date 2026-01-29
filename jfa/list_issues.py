@@ -6,6 +6,7 @@ import os.path
 import re
 import sys
 import unicodedata
+from typing import cast
 from urllib.parse import urlparse
 
 import jfa.core as core
@@ -199,19 +200,25 @@ def main(query_str: str) -> None:
 
         if not results:
             results.append(
-                {
-                    "title": "No Results",
-                    "subtitle": "No issues matching '{}'".format(query_str),
-                    "valid": False,
-                }
+                cast(
+                    Result,
+                    {
+                        "title": "No Results",
+                        "subtitle": "No issues matching '{}'".format(query_str),
+                        "valid": False,
+                    },
+                )
             )
     except Exception as error:
         results = [
-            {
-                "title": "No Issues Found",
-                "subtitle": str(error),
-                "valid": False,
-            }
+            cast(
+                Result,
+                {
+                    "title": "No Issues Found",
+                    "subtitle": str(error),
+                    "valid": False,
+                },
+            )
         ]
 
     print(core.get_result_list_feedback_str(results))
