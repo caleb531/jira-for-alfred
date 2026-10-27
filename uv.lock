@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 5
 requires-python = ">=3.9"
 resolution-markers = [
     "python_full_version >= '3.10'",
@@ -43,8 +43,8 @@ dev = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "alfred-workflow-packager", specifier = "==3.2.0" },
-    { name = "mypy", specifier = "==1.15.0" },
+    { name = "alfred-workflow-packager", specifier = ">=3.2.0" },
+    { name = "mypy", specifier = ">=1.15.0" },
     { name = "ruff", specifier = ">=0.12.0" },
 ]
 
