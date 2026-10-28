@@ -174,7 +174,7 @@ def main(query_str: str) -> None:
         if is_issue_url(query_str):
             query_str = query_str.replace(f"{core.ISSUE_BASE_URL}/", "")
 
-        results = get_result_list(query_str)
+        results: list[Result] = get_result_list(query_str)
 
         if not results:
             results.append(

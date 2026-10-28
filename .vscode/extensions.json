@@ -2,7 +2,7 @@
   "recommendations": [
     "EditorConfig.EditorConfig",
     "ms-python.black-formatter",
-    "matangover.mypy",
+    "astral-sh.ty",
     "ms-python.flake8"
   ]
 }
